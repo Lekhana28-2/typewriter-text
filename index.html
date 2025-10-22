@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Typewriter Embed</title>
+<style>
+  body { display:flex; align-items:center; justify-content:center; height:100vh; margin:0;
+         font-family: 'Courier New', monospace; background:#fff; }
+  .typewrap { font-size:32px; }
+  .cursor { border-right: .12em solid; padding-right:6px; animation: blink .7s steps(1) infinite; }
+  @keyframes blink { 50% { border-color: transparent; } }
+</style>
+</head>
+<body>
+  <div class="typewrap">
+    I am <span id="type" class="cursor"></span>
+  </div>
+
+<script>
+/* Simple typewriter that cycles through phrases */
+const phrases = ["a designer", "a coder", "13 years old", "learning new things"]; // edit phrases
+const typingSpeed = 70;   // ms per character
+const erasingSpeed = 40;  // ms per character when deleting
+const holdDelay = 1200;   // ms to wait before deleting
+
+let pIndex = 0, charIndex = 0;
+const el = document.getElementById('type');
+
+function type() {
+  if (charIndex < phrases[pIndex].length) {
+    el.textContent += phrases[pIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(type, typingSpeed);
+  } else {
+    setTimeout(erase, holdDelay);
+  }
+}
+
+function erase() {
+  if (charIndex > 0) {
+    el.textContent = phrases[pIndex].substring(0, charIndex - 1);
+    charIndex--;
+    setTimeout(erase, erasingSpeed);
+  } else {
+    pIndex = (pIndex + 1) % phrases.length;
+    setTimeout(type, 250);
+  }
+}
+
+/* Start */
+document.addEventListener('DOMContentLoaded', () => setTimeout(type, 500));
+</script>
+</body>
+</html>
